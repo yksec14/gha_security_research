@@ -1,0 +1,13 @@
+{
+    "STARTED_AT": "YYYY-MM-DD hh:mm:ss",
+    "ENDED_AT": "YYYY-MM-DD hh:mm:ss",
+    "firstparty": [
+        "actions",
+        "github"
+    ],
+    "others": [
+        "pre-commit",
+        "docker",
+        "ossf"
+    ]
+}

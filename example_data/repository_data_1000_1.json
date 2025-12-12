@@ -1,0 +1,604 @@
+{
+    "SEARCH_DATE": "1000-1",
+    "STARTED_AT": "2025-11-06 03:16:29",
+    "ENDED_AT": "2025-11-06 03:16:30",
+    "SUCCESS": {
+        "example_user/example_repo_1": {
+            "SEARTGHS_DATA": {
+                "id": 1,
+                "name": "example_user/example_repo_1",
+                "description": "This is example data_1"
+            },
+            "WORKFLOWS_DATA": {
+                "workflows_num": 3,
+                "workflows": {
+                    "sample_workflow1.yml": {
+                        "is_valid": true,
+                        "content": {
+                            "name": "Example 1 - Sampele Workflow 1",
+                            "true": {
+                                "push": {
+                                    "branches": [
+                                        "main"
+                                    ]
+                                }
+                            },
+                            "jobs": {
+                                "hello": {
+                                    "runs-on": "ubuntu-latest",
+                                    "steps": [
+                                        {
+                                            "name": "Checkout repository",
+                                            "uses": "actions/checkout@v3"
+                                        },
+                                        {
+                                            "name": "Print hello world",
+                                            "run": "echo \"hello, world\""
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "actions_list": [
+                            "actions/checkout@v3"
+                        ],
+                        "context_data": {
+                            "use_github_context": false,
+                            "job_result": {}
+                        }
+                    },
+                    "sample_workflow2.yml": {
+                        "is_valid": true,
+                        "content": {
+                            "name": "Example 1 - Sample Workflow 1",
+                            "true": {
+                                "push": {
+                                    "branches": [
+                                        "main"
+                                    ]
+                                }
+                            },
+                            "jobs": {
+                                "hello": {
+                                    "runs-on": "ubuntu-latest",
+                                    "steps": [
+                                        {
+                                            "name": "Checkout repository",
+                                            "uses": "actions/checkout@v3"
+                                        },
+                                        {
+                                            "name": "print PR title",
+                                            "env": {
+                                                "PR_TITLE": "${{ github.event.pull_request.title}}"
+                                            },
+                                            "run": "echo \"The PR title is: $PR_TITLE\""
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "actions_list": [
+                            "actions/checkout@v3"
+                        ],
+                        "context_data": {
+                            "use_github_context": true,
+                            "job_result": {
+                                "hello": {
+                                    "context_job_env": {},
+                                    "step_result": {
+                                        "1": {
+                                            "type": "uses",
+                                            "label": [],
+                                            "context_step_env": {},
+                                            "used_env_key": [],
+                                            "action": "actions/checkout@v3",
+                                            "with": false
+                                        },
+                                        "2": {
+                                            "type": "run",
+                                            "label": [
+                                                "practice2"
+                                            ],
+                                            "context_step_env": {
+                                                "PR_TITLE": "${{ github.event.pull_request.title}}"
+                                            },
+                                            "used_env_key": [
+                                                "PR_TITLE"
+                                            ]
+                                        }
+                                    }
+                                }
+                            },
+                            "context_global_env": {}
+                        }
+                    },
+                    "scorecard.yml": {
+                        "is_valid": true,
+                        "content": {
+                            "name": "Scorecard supply-chain security",
+                            "true": {
+                                "branch_protection_rule": null,
+                                "schedule": [
+                                    {
+                                        "cron": "$cron-weekly"
+                                    }
+                                ],
+                                "push": {
+                                    "branches": [
+                                        "$default-branch"
+                                    ]
+                                }
+                            },
+                            "permissions": "read-all",
+                            "jobs": {
+                                "analysis": {
+                                    "name": "Scorecard analysis",
+                                    "runs-on": "ubuntu-latest",
+                                    "if": "github.event.repository.default_branch == github.ref_name || github.event_name == 'pull_request'",
+                                    "permissions": {
+                                        "security-events": "write",
+                                        "id-token": "write"
+                                    },
+                                    "steps": [
+                                        {
+                                            "name": "Checkout code",
+                                            "uses": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+                                            "with": {
+                                                "persist-credentials": false
+                                            }
+                                        },
+                                        {
+                                            "name": "Run analysis",
+                                            "uses": "ossf/scorecard-action@f49aabe0b5af0936a0987cfb85d86b75731b0186",
+                                            "with": {
+                                                "results_file": "results.sarif",
+                                                "results_format": "sarif",
+                                                "publish_results": true
+                                            }
+                                        },
+                                        {
+                                            "name": "Upload artifact",
+                                            "uses": "actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1",
+                                            "with": {
+                                                "name": "SARIF file",
+                                                "path": "results.sarif",
+                                                "retention-days": 5
+                                            }
+                                        },
+                                        {
+                                            "name": "Upload to code-scanning",
+                                            "uses": "github/codeql-action/upload-sarif@v3",
+                                            "with": {
+                                                "sarif_file": "results.sarif"
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "actions_list": [
+                            "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+                            "ossf/scorecard-action@f49aabe0b5af0936a0987cfb85d86b75731b0186",
+                            "actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1",
+                            "github/codeql-action/upload-sarif@v3"
+                        ],
+                        "context_data": {
+                            "use_github_context": true,
+                            "job_result": {
+                                "analysis": {
+                                    "context_job_env": {},
+                                    "step_result": {
+                                        "1": {
+                                            "type": "uses",
+                                            "label": [],
+                                            "context_step_env": {},
+                                            "used_env_key": [],
+                                            "action": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+                                            "with": true
+                                        },
+                                        "2": {
+                                            "type": "uses",
+                                            "label": [],
+                                            "context_step_env": {},
+                                            "used_env_key": [],
+                                            "action": "ossf/scorecard-action@f49aabe0b5af0936a0987cfb85d86b75731b0186",
+                                            "with": true
+                                        },
+                                        "3": {
+                                            "type": "uses",
+                                            "label": [],
+                                            "context_step_env": {},
+                                            "used_env_key": [],
+                                            "action": "actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1",
+                                            "with": true
+                                        },
+                                        "4": {
+                                            "type": "uses",
+                                            "label": [],
+                                            "context_step_env": {},
+                                            "used_env_key": [],
+                                            "action": "github/codeql-action/upload-sarif@v3",
+                                            "with": true
+                                        }
+                                    }
+                                }
+                            },
+                            "context_global_env": {}
+                        }
+                    }
+                }
+            }
+        },
+        "example_user/example_repo_2": {
+            "SEARTGHS_DATA": {
+                "id": 2,
+                "name": "example_user/example_repo_2",
+                "description": "This is example data_2"
+            },
+            "WORKFLOWS_DATA": {
+                "workflows_num": 1,
+                "workflows": {
+                    "sample_workflows1.yml": {
+                        "is_valid": true,
+                        "content": {
+                            "name": "Example 2 - Sample Workflow 1",
+                            "true": {
+                                "push": {
+                                    "branches": [
+                                        "main"
+                                    ]
+                                }
+                            },
+                            "jobs": {
+                                "hello": {
+                                    "runs-on": "ubuntu-latest",
+                                    "steps": [
+                                        {
+                                            "name": "Checkout repository",
+                                            "uses": "actions/checkout@v3"
+                                        },
+                                        {
+                                            "name": "Set up QEMU",
+                                            "uses": "docker/setup-qemu-action"
+                                        },
+                                        {
+                                            "name": "Print PR Title",
+                                            "run": "echo \"${{ github.event.pull_request.title }}\""
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "actions_list": [
+                            "actions/checkout@v3",
+                            "docker/setup-qemu-action"
+                        ],
+                        "context_data": {
+                            "use_github_context": true,
+                            "job_result": {
+                                "hello": {
+                                    "context_job_env": {},
+                                    "step_result": {
+                                        "1": {
+                                            "type": "uses",
+                                            "label": [],
+                                            "context_step_env": {},
+                                            "used_env_key": [],
+                                            "action": "actions/checkout@v3",
+                                            "with": false
+                                        },
+                                        "2": {
+                                            "type": "uses",
+                                            "label": [],
+                                            "context_step_env": {},
+                                            "used_env_key": [],
+                                            "action": "docker/setup-qemu-action",
+                                            "with": false
+                                        },
+                                        "3": {
+                                            "type": "run",
+                                            "label": [
+                                                "injection_risk_basic"
+                                            ],
+                                            "context_step_env": {},
+                                            "used_env_key": []
+                                        }
+                                    }
+                                }
+                            },
+                            "context_global_env": {}
+                        }
+                    }
+                }
+            }
+        },
+        "example_user/example_repo_3": {
+            "SEARTGHS_DATA": {
+                "id": 3,
+                "name": "example_user/example_repo_3",
+                "description": "This is example data_3"
+            },
+            "WORKFLOWS_DATA": {
+                "workflows_num": 2,
+                "workflows": {
+                    "sample_workflow1.yml": {
+                        "is_valid": true,
+                        "content": {
+                            "name": "Example 3 - Sample Workflow 1",
+                            "true": {
+                                "push": {
+                                    "branches": [
+                                        "main"
+                                    ]
+                                }
+                            },
+                            "jobs": {
+                                "hello": {
+                                    "runs-on": "ubuntu-latest",
+                                    "steps": [
+                                        {
+                                            "name": "Checkout repository",
+                                            "uses": "actions/checkout@v3"
+                                        },
+                                        {
+                                            "name": "Run pre-commit checks",
+                                            "uses": "pre-commit/action@v3.0.1"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "actions_list": [
+                            "actions/checkout@v3",
+                            "pre-commit/action@v3.0.1"
+                        ],
+                        "context_data": {
+                            "use_github_context": false,
+                            "job_result": {}
+                        }
+                    },
+                    "sample_workflow2.yml": {
+                        "is_valid": true,
+                        "content": {
+                            "name": "Example 3 - Sameple Workflow 2",
+                            "true": {
+                                "push": {
+                                    "branches": [
+                                        "main"
+                                    ]
+                                }
+                            },
+                            "jobs": {
+                                "hello": {
+                                    "runs-on": "ubuntu-latest",
+                                    "steps": [
+                                        {
+                                            "name": "Checkout repository",
+                                            "uses": "actions/checkout@v3"
+                                        },
+                                        {
+                                            "name": "Set up QEMU",
+                                            "uses": "docker/setup-qemu-action@v2"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "actions_list": [
+                            "actions/checkout@v3",
+                            "docker/setup-qemu-action@v2"
+                        ],
+                        "context_data": {
+                            "use_github_context": false,
+                            "job_result": {}
+                        }
+                    }
+                }
+            }
+        },
+        "example_user/example_repo_4": {
+            "SEARTGHS_DATA": {
+                "id": 4,
+                "name": "example_user/example_repo_4",
+                "description": "This is example data_4"
+            },
+            "WORKFLOWS_DATA": {
+                "workflows_num": 1,
+                "workflows": {
+                    "sample_workflow1.yml": {
+                        "is_valid": true,
+                        "content": {
+                            "name": "Example 4 - Sample Workflow 1",
+                            "true": {
+                                "push": {
+                                    "branches": [
+                                        "main"
+                                    ]
+                                }
+                            },
+                            "jobs": {
+                                "hello": {
+                                    "runs-on": "ubuntu-latest",
+                                    "steps": [
+                                        {
+                                            "name": "Print hello world",
+                                            "run": "echo \"hello, world\""
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "actions_list": [],
+                        "context_data": {
+                            "use_github_context": false,
+                            "job_result": {}
+                        }
+                    }
+                }
+            }
+        },
+        "example_user/example_repo_5": {
+            "SEARTGHS_DATA": {
+                "id": 5,
+                "name": "example_user/example_repo_5",
+                "description": "This is example data_5"
+            },
+            "WORKFLOWS_DATA": {
+                "workflows_num": 2,
+                "workflows": {
+                    "sample_workflow1.yml": {
+                        "is_valid": true,
+                        "content": {
+                            "name": "Example 5 - Sample Workflow 1",
+                            "true": {
+                                "push": {
+                                    "branches": [
+                                        "main"
+                                    ]
+                                }
+                            },
+                            "jobs": {
+                                "hello": {
+                                    "runs-on": "ubuntu-latest",
+                                    "steps": [
+                                        {
+                                            "name": "Checkout repository",
+                                            "uses": "actions/checkout@v3"
+                                        },
+                                        {
+                                            "name": "Run pre-commit checks",
+                                            "uses": "pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd"
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "actions_list": [
+                            "actions/checkout@v3",
+                            "pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd"
+                        ],
+                        "context_data": {
+                            "use_github_context": false,
+                            "job_result": {}
+                        }
+                    },
+                    "scorecard.yml": {
+                        "is_valid": true,
+                        "content": {
+                            "name": "Scorecard supply-chain security",
+                            "true": {
+                                "branch_protection_rule": null,
+                                "schedule": [
+                                    {
+                                        "cron": "$cron-weekly"
+                                    }
+                                ],
+                                "push": {
+                                    "branches": [
+                                        "$default-branch"
+                                    ]
+                                }
+                            },
+                            "permissions": "read-all",
+                            "jobs": {
+                                "analysis": {
+                                    "name": "Scorecard analysis",
+                                    "runs-on": "ubuntu-latest",
+                                    "if": "github.event.repository.default_branch == github.ref_name || github.event_name == 'pull_request'",
+                                    "permissions": {
+                                        "security-events": "write",
+                                        "id-token": "write"
+                                    },
+                                    "steps": [
+                                        {
+                                            "name": "Checkout code",
+                                            "uses": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+                                            "with": {
+                                                "persist-credentials": false
+                                            }
+                                        },
+                                        {
+                                            "name": "Run analysis",
+                                            "uses": "ossf/scorecard-action@f49aabe0b5af0936a0987cfb85d86b75731b0186",
+                                            "with": {
+                                                "results_file": "results.sarif",
+                                                "results_format": "sarif",
+                                                "publish_results": true
+                                            }
+                                        },
+                                        {
+                                            "name": "Upload artifact",
+                                            "uses": "actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1",
+                                            "with": {
+                                                "name": "SARIF file",
+                                                "path": "results.sarif",
+                                                "retention-days": 5
+                                            }
+                                        },
+                                        {
+                                            "name": "Upload to code-scanning",
+                                            "uses": "github/codeql-action/upload-sarif@v3",
+                                            "with": {
+                                                "sarif_file": "results.sarif"
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        },
+                        "actions_list": [
+                            "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+                            "ossf/scorecard-action@f49aabe0b5af0936a0987cfb85d86b75731b0186",
+                            "actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1",
+                            "github/codeql-action/upload-sarif@v3"
+                        ],
+                        "context_data": {
+                            "use_github_context": true,
+                            "job_result": {
+                                "analysis": {
+                                    "context_job_env": {},
+                                    "step_result": {
+                                        "1": {
+                                            "type": "uses",
+                                            "label": [],
+                                            "context_step_env": {},
+                                            "used_env_key": [],
+                                            "action": "actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+                                            "with": true
+                                        },
+                                        "2": {
+                                            "type": "uses",
+                                            "label": [],
+                                            "context_step_env": {},
+                                            "used_env_key": [],
+                                            "action": "ossf/scorecard-action@f49aabe0b5af0936a0987cfb85d86b75731b0186",
+                                            "with": true
+                                        },
+                                        "3": {
+                                            "type": "uses",
+                                            "label": [],
+                                            "context_step_env": {},
+                                            "used_env_key": [],
+                                            "action": "actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1",
+                                            "with": true
+                                        },
+                                        "4": {
+                                            "type": "uses",
+                                            "label": [],
+                                            "context_step_env": {},
+                                            "used_env_key": [],
+                                            "action": "github/codeql-action/upload-sarif@v3",
+                                            "with": true
+                                        }
+                                    }
+                                }
+                            },
+                            "context_global_env": {}
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "ERROR": {}
+}

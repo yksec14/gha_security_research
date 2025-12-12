@@ -1,0 +1,14 @@
+{
+    "SEARCH_DATE": "1000-1",
+    "Description": "This file is for example",
+    "STARTED_AT": "YYYY-MM-DD hh:mm:ss",
+    "ENDED_AT": "YYYY-MM-DD hh:mm:ss",
+    "True": [
+        "example_user/example_repo_1",
+        "example_user/example_repo_2",
+        "example_user/example_repo_3",
+        "example_user/example_repo_4",
+        "example_user/example_repo_5"
+    ],
+    "False": []
+}

@@ -1,0 +1,16 @@
+name: Example 1 - Sampele Workflow 1
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Print hello world
+        run: echo "hello, world"

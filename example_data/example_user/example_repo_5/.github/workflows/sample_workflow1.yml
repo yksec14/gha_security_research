@@ -1,0 +1,16 @@
+name: Example 5 - Sample Workflow 1
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run pre-commit checks
+        uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd

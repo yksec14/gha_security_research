@@ -1,0 +1,40 @@
+{
+    "STARTED_AT": "YYYY-MM-DD hh:mm:ss",
+    "ENDED_AT": "YYYY-MM-DD hh:mm:ss",
+    "DATA": {
+        "actions/checkout": {
+            "has_marketplace_url": true,
+            "marketplace_url_or_error": "https://github.com/marketplace/actions/checkout",
+            "is_verified": true,
+            "verified_status_or_error": "Verified"
+        },
+        "github/codeql-action": {
+            "has_marketplace_url": false,
+            "marketplace_url_or_error": "Not Found Marketplace URL"
+        },
+        "pre-commit/action": {
+            "has_marketplace_url": true,
+            "marketplace_url_or_error": "https://github.com/marketplace/actions/pre-commit",
+            "is_verified": false,
+            "verified_status_or_error": "Not Verified"
+        },
+        "docker/setup-qemu-action": {
+            "has_marketplace_url": true,
+            "marketplace_url_or_error": "https://github.com/marketplace/actions/docker-setup-qemu",
+            "is_verified": true,
+            "verified_status_or_error": "Verified"
+        },
+        "actions/upload-artifact": {
+            "has_marketplace_url": true,
+            "marketplace_url_or_error": "https://github.com/marketplace/actions/upload-a-build-artifact",
+            "is_verified": true,
+            "verified_status_or_error": "Verified"
+        },
+        "ossf/scorecard-action": {
+            "has_marketplace_url": true,
+            "marketplace_url_or_error": "https://github.com/marketplace/actions/ossf-scorecard-action",
+            "is_verified": true,
+            "verified_status_or_error": "Verified"
+        }
+    }
+}
